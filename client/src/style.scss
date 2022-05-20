@@ -1,0 +1,40 @@
+.vertical-nav{
+    /* margin-top: 20%; */
+    /* font-family: Georgia, 'Times New Roman', Times, serif; */
+    /* font-style: normal; */
+    color: black;
+}
+.tweetbtn{
+    background-color: white  !important;
+    color: black !important;
+    border: none !important;
+    /* justify-content: space-evenly; */
+    /* margin-right: 15%; */
+}
+.retweet:hover{
+    color:#83BD75 !important;
+    text-shadow: 2px 2px 5px #83BD75 !important;
+}
+.like:hover{
+    color: #FF4949 !important;
+    text-shadow: 2px 2px 5px #FF4949 !important;
+}
+.reply:hover{
+    color: #79DAE8 !important;
+    text-shadow: 2px 2px 5px #79DAE8 !important;
+}
+.share:hover{
+    color: #00AFC1 !important;
+    text-shadow: 2px 2px 5px #00AFC1 !important;
+}
+.btn:focus,.btn:active {
+    outline: none !important;
+    box-shadow: none !important;
+ }
+ .card:hover{
+     background-color: aliceblue !important;
+     .btn-grp{
+        background-color: aliceblue !important;
+     }
+ }
+ 
