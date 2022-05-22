@@ -138,15 +138,22 @@ def reply_view(request,pk,*args, **kwargs):
 @api_view(['GET'])
 def tweet_detail_view(request,pk,*args, **kwargs):
     parent=tweet.objects.get(id=pk)
+    serializer=tweetSerializer(parent,many=False)
+    value={}
+    value['parent']=serializer.data
+    obj=[]
     tweet_obj=tweet.objects.filter(parent=parent,is_reply=True)
-    print(tweet_obj)
-    serializer=tweetSerializer()
-    if tweet_obj.first() is not None:
-        # print("hii")
-        serializer=tweetSerializer(tweet_obj,many=True)
-    else:
-        serializer=tweetSerializer(parent,many=False)
-    return Response(serializer.data)
+    serializer=tweetSerializer(tweet_obj,many=True)
+    obj1=serializer.data
+    for x in obj1:
+        parent=tweet.objects.get(id=x['id'])
+        z=tweet.objects.filter(parent=parent,is_reply=True)
+        serializer1=tweetSerializer(z,many=True)
+        x['children']=serializer1.data
+        print(serializer1.data)
+        obj.append(x)
+    value['comments']=obj
+    return Response(value)
 
 
 

@@ -10,14 +10,22 @@ class userSerializer(serializers.ModelSerializer):
         fields=['id','username','email','first_name','second_name']
 
 class createTweetSerializer(serializers.ModelSerializer):
-    # likes=serializers.SerializerMethodField()
+    likes=serializers.SerializerMethodField()
     username=serializers.SerializerMethodField(source='user')
+    is_reply=serializers.SerializerMethodField()
+    is_retweet=serializers.SerializerMethodField()
     class Meta:
         model=tweet
-        fields=['id','content','image','username']
+        fields=['id','content','image','username','is_retweet','is_reply','likes']
 
     def get_username(self,obj):
         return obj.user.username
+    def get_is_reply(self,obj):
+        return obj.is_reply
+    def get_is_retweet(self,obj):
+        return obj.is_retweet
+    def get_likes(self,obj):
+        return obj.likes.count()
     
     
 
@@ -26,19 +34,18 @@ class tweetSerializer(serializers.ModelSerializer):
     likes=serializers.SerializerMethodField()
     is_reply=serializers.SerializerMethodField()
     is_retweet=serializers.SerializerMethodField()
-    user=serializers.SerializerMethodField()
-    # content=serializers.SerializerMethodField()
+    username=serializers.SerializerMethodField(source='user')
     parent=createTweetSerializer()
     class Meta:
         model=tweet
-        fields=['id','content','image','likes','parent','is_retweet','is_reply','user']
+        fields=['id','content','image','likes','parent','is_retweet','is_reply','username']
     def get_likes(self,obj):
-        return obj.like.count()
+        return obj.likes.count()
     def get_is_reply(self,obj):
         return obj.is_reply
     def get_is_retweet(self,obj):
         return obj.is_retweet
-    def get_user(self,obj):
+    def get_username(self,obj):
         return obj.user.username
 
 class userSerializer(serializers.ModelSerializer):

@@ -7,7 +7,7 @@ import LogOut from "./Pages/logout";
 
 // TweetDetail
 import {useState,useEffect,createContext } from "react";
-import TweetDetail from "./Pages/detail";
+import Detail from "./Pages/detail";
 import Profile from "./components/profile";
 // import { LoginContext } from "./contexts/AuthContext";
 
@@ -25,7 +25,7 @@ function App() {
       <Route path="/signin" element={user?<Navigate to='/'/>:<Signin/>} />
       <Route path="/signup" element={user?<Navigate to='/'/>:<SignUp/>} />
       <Route path="/logout" element={<LogOut/>} />
-      <Route path="/detail/:id" element={<TweetDetail/>} />
+      <Route path="/detail/:id" element={<Detail/>} />
       <Route path="/profile/:id" element={<Profile/>} />
     </Routes>
     </Router> 

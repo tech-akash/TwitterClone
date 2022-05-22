@@ -8,7 +8,7 @@ import {
     Row,
 } from 'react-bootstrap'
 import { useParams } from "react-router-dom";
-import Tweet from "../components/Tweet";
+// import Tweet from "../components/Tweet";
 import SingleTweet from "../components/singleTweet";
 function Profile() {
     const { id } = useParams()

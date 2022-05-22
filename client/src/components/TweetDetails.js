@@ -2,16 +2,10 @@
 import axios from "axios";
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import {
-    Form,
-    Container,
-    Col,
-    Row,
-    Card, Nav, Navbar, ButtonGroup, Modal, Button
-} from 'react-bootstrap'
+import {Form,Card, ButtonGroup, Button} from 'react-bootstrap'
 import '../style.scss'
-import { Link,Navigate } from "react-router-dom";
-function Tweet(props) {
+import { Link} from "react-router-dom";
+function TweetDetails(props) {
     const [ content, setContent ] = useState()
     const id=0;
     const {authToken}=useContext(AuthContext)
@@ -164,4 +158,4 @@ function Tweet(props) {
 }
 
 
-export default Tweet
+export default TweetDetails

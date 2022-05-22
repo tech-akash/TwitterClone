@@ -1,30 +1,21 @@
 import React from 'react';
-import { Form, 
-  Container,
-   Col,
-    Row,
-     Card, Nav, Navbar, ButtonGroup,Modal,Button } from 'react-bootstrap'
+import { Form, Container,Col,Row,Button } from 'react-bootstrap'
 import { useState, useEffect, useContext } from "react";
 import axios from "axios"
-import { Link,Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import MyVerticallyCenteredModal from '../components/modal';
 import NavBar from '../components/NavBar';
 import '../style.scss'
-// import { LoginContext } from "../contexts/AuthContext";
+import Comment from '../components/comment';
+import Retweet from '../components/retweet';
+import Tweet from '../components/tweet';
 import { AuthContext } from '../contexts/AuthContext';
-
 function Home() {
   const navigate = useNavigate();
-  const [modalShow, setModalShow] = useState(false);
   const [data, setData] = useState(null)
   const [content, setContent] = useState("")
   const [image, setImage] = useState(null)
   const { user, authToken, logout,SettweetDetail } = useContext(AuthContext)
-  const [clickObjId,setclickObjId] = useState()
-  // console.log(authToken.access)
   async function getdata() {
-    // let data;
     try {
 
       let response = await axios.get(`http://127.0.0.1:8000/`, {
@@ -52,7 +43,7 @@ function Home() {
 
   useEffect(() => {
     getdata()
-  }, [modalShow]
+  }, []
 
   );
 
@@ -81,55 +72,12 @@ function Home() {
         return error.response;
       });
   }
-  async function handleLike(id) {
-    console.log(id)
-    try {
 
-      let response = await axios.get(`http://127.0.0.1:8000/like/${id}/`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + String(authToken.access)
-        }
-      })
-      getdata()
-      // setData(response.data)
-    } catch (e) {
-      console.log(e)
-      // if(user &&e.response.status===401){
-      //   logout()
-      // }else if(user&&e.response.status<=500){
-      //   alert(e.message)
-      // }
-    }
-  }
-  async function handleretweet(id) {
-    console.log(id)
-    try {
-
-      let response = await axios.post(`http://127.0.0.1:8000/retweet/${id}/`,{} ,{
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + String(authToken.access)
-        }
-      })
-      getdata()
-      // setData(response.data)
-    } catch (e) {
-      console.log(e)
-      // if(user &&e.response.status===401){
-      //   logout()
-      // }else if(user&&e.response.status<=500){
-      //   alert(e.message)
-      // }
-    }
-  }
+ 
   if (data) {
     console.log(data)
   }
-  function handlebtn(id){
-    setclickObjId(id);
-    setModalShow(true)
-  }
+
 
   return (
     <Container className="App">
@@ -164,61 +112,16 @@ function Home() {
 
           <div>
 
-            {data && data.map(({ image, content, id, likes,user,parent,is_retweet,is_reply,index }) => (
-              < Card key={id} style={{ width: "100%", margin: "10px" }} className='card'>
-                <Link to ={`/detail/${id}` } style={{textDecoration:"none", color:"black"}} > 
-              {/* <Link to="/detail"> */}
+            {data && data.map(({ image, content, id, likes,username,parent,is_retweet,is_reply,index }) => (
+              <div>
 
-                {image && <Card.Img variant="top" src={`http://127.0.0.1:8000/${image}`} />}
-                {/* </Link> */}
+             {!parent&&<Tweet image={image} data={data} content={content} id={id} likes={likes} username={username} parent={parent} is_reply={is_reply} is_retweet={is_retweet}/>}
+             {parent&&is_retweet&&<Retweet data={data} image={image} content={content} id={id} likes={likes} username={username} parent={parent} is_reply={is_reply} is_retweet={is_retweet}/>}
+             {parent&&is_reply&&<Comment data={data} image={image} content={content} id={id} likes={likes} username={username} parent={parent} is_reply={is_reply} is_retweet={is_retweet}/>}
+              </div>
 
-                <Card.Body>
-                {is_retweet&&!content&&<div><span><i class="bi bi-arrow-repeat"></i> {user} Retweeted </span>
-                <Link to='/profile'>
-
-                <Card.Title>{parent['username']}</Card.Title>
-                </Link>
-                  
-                  {parent['content'] && <Card.Text>
-                    {parent['content']}
-                  </Card.Text>}
-                  </div>}
-                  {is_retweet&&content&&<Card>
-
-                  </Card>}
-                  
-                  {!is_retweet&&<Card.Title>{user}</Card.Title>}
-                  {/* {is_reply&&<span style={{color:"grey"}}>Replying to {parent['username']}</span>} */}
-                  
-
-                  {content && <Card.Text>
-                    {content}
-                  </Card.Text>}
-                  
-                  </Card.Body>
-                  {/* <FaTwitter/> */}
-                </Link>
-                  <ButtonGroup aria-label="Basic example"  className='btn-grp'>
-                    <Button className='btn tweetbtn like'  onClick={() => handleLike(id)}>{likes} <i class="bi bi-heart"></i></Button>
-                    <Button className=' btn tweetbtn retweet'  onClick={() => handleretweet(id)}><i class="bi bi-arrow-repeat"></i></Button>
-                    <Button className='btn tweetbtn reply'  onClick={() =>{ handlebtn(id)} }><i class="bi bi-reply"></i></Button>
-                    <Button className='btn tweetbtn share'><i class="bi bi-share"></i></Button>
-                  </ButtonGroup>
-              
-                  
-                  
-                  
-                    
-                
-              </Card>
-              
             ))}
-                    <MyVerticallyCenteredModal
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-        data={data}
-        id={clickObjId}
-      />
+                    
           </div>
         </Col>
         <Col>3 of 3</Col>
@@ -230,20 +133,3 @@ function Home() {
 }
 
 export default Home;
-// {/* <Card key={id} style={{ width: "100%", margin: "10px" }} className='card'>
-//                 {image && <Card.Img variant="top" src={`http://127.0.0.1:8000/${image}`} />}
-
-//                 <Card.Body>
-//                   <Card.Title>{user}</Card.Title>
-//                   {content && <Card.Text>
-//                     {content}
-//                   </Card.Text>}
-
-//                   {/* <ButtonGroup aria-label="Basic example" style={{ paddingRight: "20%" }} > */}
-//                     <Button className='tweetbtn like btn' onClick={() => handleLike(id)}>{likes} <i class="bi bi-heart"></i></Button>
-//                     <Button className='tweetbtn retweet btn 'onClick={() => handleretweet(id)}><i class="bi bi-arrow-repeat"></i></Button>
-//                     <Button className='tweetbtn reply btn' onClick={() =>{ handlebtn(id)} }><i class="bi bi-reply"></i></Button>
-//                     <Button className='tweetbtn share btn'><i class="bi bi-share"></i></Button>
-//                   {/* </ButtonGroup> */}
-//                 </Card.Body>
-//               </Card> */}
