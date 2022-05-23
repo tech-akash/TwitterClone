@@ -45,6 +45,8 @@ function Retweet(props) {
     return (
         <div>
              <Card>
+
+                    <Link to={`/detail/${props.id}` }style={{textDecoration:"none"}}>
                 <Card.Body>
                     <span style={{ color: "grey" }}>Retweeted by <Link to={`/profile/${props.username}`}>{props.username}</Link> </span>
                     <Card.Title><Link to={`/profile/${props.parent['username']}`}>{props.parent['username']}</Link></Card.Title>
@@ -52,19 +54,15 @@ function Retweet(props) {
                         {props.parent['content']}
                     </Card.Text>}
                 </Card.Body>
+                    </Link>
                 <ButtonGroup aria-label="Basic example" className='btn-grp' >
                     <Button className='btn tweetbtn like' onClick={() => handleLike(props.id)}>{props.likes} <i class="bi bi-heart"></i></Button>
                     <Button className='btn tweetbtn retweet' onClick={() => handleretweet(props.id)}><i class="bi bi-arrow-repeat"></i></Button>
-                    <Button className='btn tweetbtn reply' onClick={() => { handlereply(props.id) }}><i class="bi bi-reply"></i></Button>
+                    {/* <Button className='btn tweetbtn reply' onClick={() => { handlereply(props.id) }}><i class="bi bi-reply"></i></Button> */}
                     <Button className='btn tweetbtn share' ><i class="bi bi-share"></i></Button>
                 </ButtonGroup>
             </Card>
-            {clickObjId && <MyVerticallyCenteredModal
-                show={modalShow}
-                onHide={() => setModalShow(false)}
-                data={props.data}
-                id={clickObjId}
-            />}
+            
             
         </div>
     );

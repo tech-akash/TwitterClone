@@ -86,10 +86,10 @@ def tweet_like_toggle(request,pk,*args, **kwargs):
     print(obj)
     if not obj:
         return Response({},status=404)
-    if request.user in obj.like.all():
-        obj.like.remove(request.user)
+    if request.user in obj.likes.all():
+        obj.likes.remove(request.user)
     else:
-        obj.like.add(request.user)
+        obj.likes.add(request.user)
     
     return Response ({"message":"Tweet Liked"})
     
@@ -137,9 +137,19 @@ def reply_view(request,pk,*args, **kwargs):
 
 @api_view(['GET'])
 def tweet_detail_view(request,pk,*args, **kwargs):
+
     parent=tweet.objects.get(id=pk)
     serializer=tweetSerializer(parent,many=False)
     value={}
+    if parent.is_reply:
+        pid=serializer.data['parent']['id']
+        parent=tweet.objects.get(id=pid)
+        serializer=tweetSerializer(parent,many=False)
+        if parent.is_reply:
+            pid=serializer.data['parent']['id']
+            parent=tweet.objects.get(id=pid)
+            serializer=tweetSerializer(parent,many=False)
+    # print(serializer.data['parent']['id'])
     value['parent']=serializer.data
     obj=[]
     tweet_obj=tweet.objects.filter(parent=parent,is_reply=True)

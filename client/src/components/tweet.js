@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import MyVerticallyCenteredModal from '../components/modal';
 import axios from "axios";
+import pic from "../user-icon.png";
+
 function Tweet(props) {
     const { authToken } = useContext(AuthContext)
     const [modalShow, setModalShow] = useState(false);
@@ -44,6 +46,7 @@ function Tweet(props) {
     return (
         <div>
             <Card>
+            <Link to={`/detail/${props.id}` }style={{textDecoration:"none"}}>
                 {props.image && <Card.Img variant="top" src={`http://127.0.0.1:8000/${props.image}`} />}
                 <Card.Body>
                     <Card.Title><Link to={`/profile/${props.username}`}>{props.username}</Link></Card.Title>
@@ -51,6 +54,7 @@ function Tweet(props) {
                         {props.content}
                     </Card.Text>}
                 </Card.Body>
+                </Link>
                 <ButtonGroup aria-label="Basic example" className='btn-grp' >
                     <Button className='btn tweetbtn like' onClick={() => handleLike(props.id)}>{props.likes} <i class="bi bi-heart"></i></Button>
                     <Button className='btn tweetbtn retweet' onClick={() => handleretweet(props.id)}><i class="bi bi-arrow-repeat"></i></Button>

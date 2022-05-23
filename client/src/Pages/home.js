@@ -9,6 +9,7 @@ import Comment from '../components/comment';
 import Retweet from '../components/retweet';
 import Tweet from '../components/tweet';
 import { AuthContext } from '../contexts/AuthContext';
+import { Link } from 'react-router-dom';
 function Home() {
   const navigate = useNavigate();
   const [data, setData] = useState(null)
@@ -114,10 +115,16 @@ function Home() {
 
             {data && data.map(({ image, content, id, likes,username,parent,is_retweet,is_reply,index }) => (
               <div>
+              
 
              {!parent&&<Tweet image={image} data={data} content={content} id={id} likes={likes} username={username} parent={parent} is_reply={is_reply} is_retweet={is_retweet}/>}
+              
+                
              {parent&&is_retweet&&<Retweet data={data} image={image} content={content} id={id} likes={likes} username={username} parent={parent} is_reply={is_reply} is_retweet={is_retweet}/>}
+              
              {parent&&is_reply&&<Comment data={data} image={image} content={content} id={id} likes={likes} username={username} parent={parent} is_reply={is_reply} is_retweet={is_retweet}/>}
+                
+              
               </div>
 
             ))}

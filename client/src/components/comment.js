@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { Card, ButtonGroup,Button } from 'react-bootstrap'
 import { Link} from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
-import MyVerticallyCenteredModal from '../components/modal';
 import axios from "axios";
+import MyVerticallyCenteredModal from '../components/modal';
 function Comment(props) {
     const { authToken } = useContext(AuthContext)
     const [modalShow, setModalShow] = useState(false);
@@ -43,13 +43,17 @@ function Comment(props) {
     return (
         <div>
             {props.parent && props.parent['is_reply'] && <Card>
+                <Link to={`/detail/${props.id}` }style={{textDecoration:"none"}}>
                 <Card.Body>
-                    <Card.Title>{props.username}</Card.Title>
+
+                    <Card.Title><Link to={`/profile/${props.username}`}>{props.username}</Link></Card.Title>
                     <span style={{ color: "grey" }}>Replying to <Link to={`/profile/${props.parent['username']}`}>{props.parent['username']}</Link></span>
+
                     {props.content && <Card.Text>
                         {props.content}
                     </Card.Text>}
                 </Card.Body>
+                </Link>
                 <ButtonGroup aria-label="Basic example" className='btn-grp' >
                 <Button className='btn tweetbtn like' onClick={() => handleLike(props.id)}>{props.likes} <i class="bi bi-heart"></i></Button>
                     <Button className='btn tweetbtn retweet' onClick={() => handleretweet(props.id)}><i class="bi bi-arrow-repeat"></i></Button>
@@ -58,6 +62,8 @@ function Comment(props) {
                 </ButtonGroup>
             </Card>}
             {props.parent && !props.parent['is_reply'] && <Card>
+            <Link to={`/detail/${props.id}` }style={{textDecoration:"none"}}>
+
                 <Card.Body>
                     <Card.Title><Link to={`/profile/${props.username}`}>{props.username}</Link></Card.Title>
                     <span style={{ color: "grey" }}>Replying to <Link to={`/profile/${props.parent['username']}`}>{props.parent['username']}</Link></span>
@@ -65,6 +71,7 @@ function Comment(props) {
                         {props.content}
                     </Card.Text>}
                 </Card.Body>
+            </Link>
                 <ButtonGroup aria-label="Basic example" className='btn-grp' >
                     <Button className='btn tweetbtn like' onClick={() => handleLike(props.id)}>{props.likes} <i class="bi bi-heart"></i></Button>
                     <Button className='btn tweetbtn retweet' onClick={() => handleretweet(props.id)}><i class="bi bi-arrow-repeat"></i></Button>
