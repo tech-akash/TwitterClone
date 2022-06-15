@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Container,Col,Row,Button } from 'react-bootstrap'
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
 import NavBar from '../components/NavBar';
@@ -9,52 +9,18 @@ import Comment from '../components/comment';
 import Retweet from '../components/retweet';
 import Tweet from '../components/tweet';
 import { AuthContext } from '../contexts/AuthContext';
-import { Link } from 'react-router-dom';
+import { ApiContext } from '../contexts/ApiContent';
 function Home() {
-  const navigate = useNavigate();
-  const [data, setData] = useState(null)
   const [content, setContent] = useState("")
   const [image, setImage] = useState(null)
   const { user, authToken, logout,SettweetDetail } = useContext(AuthContext)
-  async function getdata() {
-    try {
-
-      let response = await axios.get(`http://127.0.0.1:8000/`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + String(authToken.access)
-        }
-      })
-      setData(response.data)
-    } catch (e) {
-      // console.log(e)
-      if (user && e.response.status === 401) {
-        console.log("hiii")
-        logout()
-        // navigate("/");
-        
-      } else if (user && e.response.status <= 500) {
-        alert(e.message)
-      }
-    }
-
-
-
-  }
-
-  useEffect(() => {
-    getdata()
-  }, []
-
-  );
-
+  const {data,getdata}=useContext(ApiContext);
+  
   function handleimg(e) {
-    // setImgUrl((e.target.files[0]))
     console.log(e.target.files[0])
     setImage(e.target.files[0]);
   }
   function handleSubmit(e) {
-    // let productimg=URL.createObjectURL(imgUrl)
     e.preventDefault()
     let data = { content, image }
     console.log(data);

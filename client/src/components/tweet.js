@@ -5,9 +5,11 @@ import { AuthContext } from "../contexts/AuthContext";
 import MyVerticallyCenteredModal from '../components/modal';
 import axios from "axios";
 import pic from "../user-icon.png";
+import { ApiContext } from "../contexts/ApiContent";
 
 function Tweet(props) {
     const { authToken } = useContext(AuthContext)
+    const {getdata}=useContext(ApiContext)
     const [modalShow, setModalShow] = useState(false);
     const [clickObjId, setclickObjId] = useState(null);
     var data=null;
@@ -20,6 +22,7 @@ function Tweet(props) {
                     'Authorization': 'Bearer ' + String(authToken.access)
                 }
             })
+            getdata();
         } catch (e) {
             console.log(e)
         }
@@ -33,6 +36,7 @@ function Tweet(props) {
                     'Authorization': 'Bearer ' + String(authToken.access)
                 }
             })
+            getdata();
         } catch (e) {
             console.log(e)
         }
@@ -46,8 +50,8 @@ function Tweet(props) {
     return (
         <div>
             <Card>
-            <Link to={`/detail/${props.id}` }style={{textDecoration:"none"}}>
-                {props.image && <Card.Img variant="top" src={`http://127.0.0.1:8000/${props.image}`} />}
+            <Link to={`/detail/${props.id}` } style={{textDecoration:"none",color:"black"}}>
+                {props.image && <Card.Img variant="top" src={`http://127.0.0.1:8000${props.image}`} />}
                 <Card.Body>
                     <Card.Title><Link to={`/profile/${props.username}`}>{props.username}</Link></Card.Title>
                     {props.content && <Card.Text>

@@ -3,9 +3,11 @@ import { Card, ButtonGroup,Button } from 'react-bootstrap'
 import { Link} from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import axios from "axios";
+import { ApiContext } from "../contexts/ApiContent";
 import MyVerticallyCenteredModal from '../components/modal';
 function Comment(props) {
     const { authToken } = useContext(AuthContext)
+    const {getdata}=useContext(ApiContext)
     const [modalShow, setModalShow] = useState(false);
     const [clickObjId, setclickObjId] = useState(null);
     async function handleLike(id) {
@@ -17,6 +19,7 @@ function Comment(props) {
                     'Authorization': 'Bearer ' + String(authToken.access)
                 }
             })
+            getdata();
         } catch (e) {
             console.log(e)
         }
@@ -30,6 +33,7 @@ function Comment(props) {
                     'Authorization': 'Bearer ' + String(authToken.access)
                 }
             })
+            getdata();
         } catch (e) {
             console.log(e)
         }
@@ -62,7 +66,7 @@ function Comment(props) {
                 </ButtonGroup>
             </Card>}
             {props.parent && !props.parent['is_reply'] && <Card>
-            <Link to={`/detail/${props.id}` }style={{textDecoration:"none"}}>
+            <Link to={`/detail/${props.id}` } style={{textDecoration:"none",color:"black"}}>
 
                 <Card.Body>
                     <Card.Title><Link to={`/profile/${props.username}`}>{props.username}</Link></Card.Title>

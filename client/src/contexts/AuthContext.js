@@ -4,7 +4,6 @@ import axios from "axios"
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 export const AuthContext = createContext();
-
 export const AuthContextProvider = ({ children }) => {
   //  localStorage.getItem('authToken')?jwt_decode((JSON.parse(localStorage.getItem('authToken'))).access):null
   let [authToken, SetauthTokens] = useState(localStorage.getItem('authToken') ? JSON.parse(localStorage.getItem('authToken')) : null)
@@ -107,7 +106,7 @@ export const AuthContextProvider = ({ children }) => {
     <AuthContext.Provider
       value={contextData}
     >
-      {children}
+    {children}
     </AuthContext.Provider>
   );
 

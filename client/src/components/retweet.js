@@ -1,14 +1,15 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState,useContext } from "react";
 import { Card, ButtonGroup,Button } from 'react-bootstrap'
 import { Link} from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
-import MyVerticallyCenteredModal from '../components/modal';
+import { ApiContext } from "../contexts/ApiContent";
 import axios from "axios";
 
 function Retweet(props) {
     const { authToken } = useContext(AuthContext)
     const [modalShow, setModalShow] = useState(false);
     const [clickObjId, setclickObjId] = useState(null);
+    const {getdata}=useContext(ApiContext)
     async function handleLike(id) {
         try {
 
@@ -18,6 +19,7 @@ function Retweet(props) {
                     'Authorization': 'Bearer ' + String(authToken.access)
                 }
             })
+            getdata()
         } catch (e) {
             console.log(e)
         }
@@ -31,6 +33,7 @@ function Retweet(props) {
                     'Authorization': 'Bearer ' + String(authToken.access)
                 }
             })
+            getdata()
         } catch (e) {
             console.log(e)
         }
@@ -46,7 +49,7 @@ function Retweet(props) {
         <div>
              <Card>
 
-                    <Link to={`/detail/${props.id}` }style={{textDecoration:"none"}}>
+                    <Link to={`/detail/${props.id}` }style={{textDecoration:"none",color:"black"}}>
                 <Card.Body>
                     <span style={{ color: "grey" }}>Retweeted by <Link to={`/profile/${props.username}`}>{props.username}</Link> </span>
                     <Card.Title><Link to={`/profile/${props.parent['username']}`}>{props.parent['username']}</Link></Card.Title>

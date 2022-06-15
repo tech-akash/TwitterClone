@@ -13,6 +13,7 @@ import '../style.scss'
 function Detail() {
     const { id } = useParams()
     const { authToken } = useContext(AuthContext)
+    // const {getdata}=useContext(ApiContext)
     const [data, Setdata] = useState()
     const [ content, setContent ] = useState()
     async function getData() {
@@ -40,6 +41,9 @@ function Detail() {
                     'Authorization': "Bearer " + String(authToken.access)
                 }
             })
+            getData()
+            getData();
+
             setContent(null)
         } catch (e) {
             console.log(e)
@@ -66,6 +70,8 @@ function Detail() {
                     'Authorization': 'Bearer ' + String(authToken.access)
                 }
             })
+            getData()
+            getData();
         } catch (e) {
             console.log(e)
         }
@@ -79,6 +85,8 @@ function Detail() {
                     'Authorization': 'Bearer ' + String(authToken.access)
                 }
             })
+            getData()
+            getData();
         } catch (e) {
             console.log(e)
         }
@@ -104,6 +112,7 @@ function Detail() {
                            
                             
 
+                        {data['parent']['image']&&<img style={{width:"100%",height:"100%"}}src={`http://127.0.0.1:8000${data['parent']['image']}`}/>}
                         </div>
                         <div className="comment-text big" >
                             {data['parent']['content']}

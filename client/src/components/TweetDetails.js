@@ -2,13 +2,16 @@
 import axios from "axios";
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+
 import {Form,Card, ButtonGroup, Button} from 'react-bootstrap'
 import '../style.scss'
 import { Link} from "react-router-dom";
+import { ApiContext } from "../contexts/ApiContent";
 function TweetDetails(props) {
     const [ content, setContent ] = useState()
     const id=0;
     const {authToken}=useContext(AuthContext)
+    const {getdata}=useContext(ApiContext);
     async function handleLike(tid) {
         console.log(id)
         try {
@@ -19,6 +22,7 @@ function TweetDetails(props) {
                     'Authorization': 'Bearer ' + String(authToken.access)
                 }
             })
+            getdata()
 
             // setData(response.data)
         } catch (e) {
@@ -40,6 +44,7 @@ function TweetDetails(props) {
                     'Authorization': 'Bearer ' + String(authToken.access)
                 }
             })
+            getdata()
 
             // setData(response.data)
         } catch (e) {
@@ -61,6 +66,7 @@ function TweetDetails(props) {
                     'Authorization': "Bearer " + String(authToken.access)
                 }
             })
+            getdata()
         } catch (e) {
             console.log(e)
         }

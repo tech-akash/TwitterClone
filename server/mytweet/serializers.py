@@ -1,8 +1,8 @@
-from dataclasses import field
-from pyexpat import model
+
+from dataclasses import fields
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import tweet
+from .models import tweet,Profile,tweetLike
 
 class userSerializer(serializers.ModelSerializer):
     class Meta:
@@ -52,4 +52,16 @@ class userSerializer(serializers.ModelSerializer):
     class Meta:
         model=User
         fields='__all__'
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    # LikedTweets=serializers.SerializerMethodField()
+    # OwnTweets=serializers.SerializerMethodField()
+    username=serializers.SerializerMethodField(source='user')
+    class Meta:
+        model=Profile
+        fields=['Fname','Lname','DOB','user','username','profileImg','CountryOfOrigin']
+    def get_username(self,obj):
+        return obj.user.username
+    
+    
 

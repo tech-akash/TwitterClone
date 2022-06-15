@@ -1,12 +1,13 @@
+import profile
 from django.http import Http404
 from django.shortcuts import render
 from django.http import JsonResponse
 # from itsdangerous import Serializer
 from rest_framework.decorators import api_view,permission_classes
 from rest_framework.response import Response
-from .serializers import tweetSerializer,userSerializer,createTweetSerializer
+from .serializers import tweetSerializer,userSerializer,createTweetSerializer,UserProfileSerializer
 # Create your views here.
-from .models import tweet
+from .models import tweet,Profile,tweetLike
 from django.contrib.auth.models import User
 from .forms import createUserForm
 from django.contrib.auth import login,logout,authenticate
@@ -42,6 +43,9 @@ def signup_view(request,*args,**kwargs):
         print(form)
         if form.is_valid():
             form.save()
+            username=form.cleaned_data['username']
+            user=User.objects.get(username=username)
+            Profile.objects.create(user=user)
     return Response(request.POST)
 
 @api_view(['POST'])
@@ -168,9 +172,22 @@ def tweet_detail_view(request,pk,*args, **kwargs):
 
 
 @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
 def profile_view(request,pk,*args,**kwargs):
     user=User.objects.get(username=pk)
-    serializer=userSerializer(user,many=False)
-    return Response(serializer.data)
-
+    profile=Profile.objects.get(user=user)
+    serializer=UserProfileSerializer(profile,many=False)
+    value=serializer.data
+    obj=tweetLike.objects.filter(user=user).values('tweet_id')
+    likedTweet=[]
+    for x in obj :
+        tweet_obj=(tweet.objects.get(id=x['tweet_id']))
+        likedTweet.append(tweet_obj)
+    print(likedTweet)
+    ownTweet_obj=tweet.objects.filter(user=user,is_reply=False,is_retweet=False)
+    ownTweet=tweetSerializer(ownTweet_obj,many=True).data
+    # print(ownTweet)
+    value['likedTweet']=tweetSerializer(likedTweet,many=True).data
+    value['ownTweet']=ownTweet
+    return Response(value)
 

@@ -21,3 +21,12 @@ class tweet (models.Model):
     class Meta:
         ordering=['-id']
     
+class Profile(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    DOB=models.DateField(null=True,blank=True)
+    Fname=models.CharField(max_length=20,null=True,blank=True)
+    Lname=models.CharField(max_length=30,null=True,blank=True)
+    CountryOfOrigin=models.CharField(max_length=30,null=True,blank=True)
+    profileImg=models.ImageField(upload_to="./image", null=True,blank=True)
+    # LikedTweets=models.ManyToManyField(tweet,related_name="userLikes")
+    # OwnTweets=models.ManyToManyField(tweet,related_name="userTweets")

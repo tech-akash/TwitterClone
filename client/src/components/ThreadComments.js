@@ -8,6 +8,7 @@ import '../style.scss'
 import pic from "../user-icon.png";
 function ThreadComments(props){
     const { authToken } = useContext(AuthContext)
+    
     const [modalShow, setModalShow] = useState(false);
     const [clickObjId, setclickObjId] = useState(null);
     async function handleLike(id) {
@@ -60,9 +61,9 @@ function ThreadComments(props){
                         <div className="comment-text">
                             {content}
                 <ButtonGroup aria-label="Basic example" style={{paddingLeft:"10%",paddingRight:"10%",width:"100%"}} >
-                    <Button className='btn tweetbtn like' onClick={() => handleLike(props.id)}>{props.likes} <i class="bi bi-heart"></i></Button>
-                    <Button className='btn tweetbtn retweet' onClick={() => handleretweet(props.id)}><i class="bi bi-arrow-repeat"></i></Button>
-                    <Button className='btn tweetbtn reply' onClick={() => { handlereply(props.id) }}><i class="bi bi-reply"></i></Button>
+                    <Button className='btn tweetbtn like' onClick={() => handleLike(id)}>{likes} <i class="bi bi-heart"></i></Button>
+                    <Button className='btn tweetbtn retweet' onClick={() => handleretweet(id)}><i class="bi bi-arrow-repeat"></i></Button>
+                    <Button className='btn tweetbtn reply' onClick={() => { handlereply(id) }}><i class="bi bi-reply"></i></Button>
                     <Button className='btn tweetbtn share' ><i class="bi bi-share"></i></Button>
             </ButtonGroup>
                         </div>
@@ -88,7 +89,7 @@ function ThreadComments(props){
                         <div className="comment-text">
                             {content}
                     <ButtonGroup aria-label="Basic example" style={{paddingLeft:"15%",paddingRight:"15%",width:"100%"}} >
-                    <Button className='btn tweetbtn like' onClick={() => handleLike(props.id)}>{props.likes} <i class="bi bi-heart"></i></Button>
+                    <Button className='btn tweetbtn like' onClick={() => handleLike(id)}>{likes} <i class="bi bi-heart"></i></Button>
                     {/* <Button className='btn tweetbtn retweet' onClick={() => handleretweet(props.id)}><i class="bi bi-arrow-repeat"></i></Button>
                     <Button className='btn tweetbtn reply' onClick={() => { handlereply(props.id) }}><i class="bi bi-reply"></i></Button> */}
                     <Button className='btn tweetbtn share' ><i class="bi bi-share"></i></Button>

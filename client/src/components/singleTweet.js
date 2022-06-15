@@ -2,6 +2,7 @@
 import axios from "axios";
 import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+import { ApiContext } from "../contexts/ApiContent";
 import {
     Form, Card, ButtonGroup, Button
 } from 'react-bootstrap'
@@ -11,6 +12,7 @@ function SingleTweet(props) {
     const [content, setContent] = useState()
     const id = 0;
     const { authToken } = useContext(AuthContext)
+    const{getdata}=useContext(ApiContext);
     async function handleLike(tid) {
         console.log(id)
         try {
@@ -20,6 +22,8 @@ function SingleTweet(props) {
                     'Authorization': 'Bearer ' + String(authToken.access)
                 }
             })
+            getdata();
+
         } catch (e) {
             console.log(e)
         }
@@ -33,6 +37,8 @@ function SingleTweet(props) {
                     'Authorization': 'Bearer ' + String(authToken.access)
                 }
             })
+            getdata();
+
         } catch (e) {
             console.log(e)
         }
@@ -47,6 +53,7 @@ function SingleTweet(props) {
                     'Authorization': "Bearer " + String(authToken.access)
                 }
             })
+            getdata();
         } catch (e) {
             console.log(e)
         }
