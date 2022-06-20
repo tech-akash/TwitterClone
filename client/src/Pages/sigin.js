@@ -5,15 +5,20 @@ import {Form,Container,Col,Row,Card,Button} from 'react-bootstrap'
 // import { LoginContext } from "../contexts/AuthContext";
 import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { ApiContext } from "../contexts/ApiContent";
+
 
 function Signin(){
     
     // console.log(Auth)
+    
     const [username,setUsername]=useState("")
     const [password,setPassword]=useState("")
     const {loginUser,user}=useContext(AuthContext)
-    const navigate = useNavigate();
+    const {getdata}=useContext(ApiContext)
+    const navigate = useNavigate(ApiContext);
     if(user){
+      getdata();
       navigate('/')
     }
     return (

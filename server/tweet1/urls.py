@@ -13,7 +13,9 @@ MyTokenObtainPairView,
 tweet_like_toggle ,
 retweet_view,
 reply_view,
-tweet_detail_view,)
+tweet_detail_view,
+toggle_follower,
+discover_view,)
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
@@ -32,5 +34,7 @@ urlpatterns = [
     path('retweet/<int:pk>/',retweet_view,name="retweetTweet"),
     path('reply/<int:pk>/',reply_view,name="replyTweet"),
     path('detail/<int:pk>/',tweet_detail_view,name="tweetDetail"),
+    path('toggleFollower/',toggle_follower,name="follower"),
+    path('discover/',discover_view,name="discover"),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

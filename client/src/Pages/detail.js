@@ -9,6 +9,11 @@ import { Link } from "react-router-dom";
 import ThreadComments from "../components/ThreadComments";
 import pic from "../user-icon.png";
 import '../style.scss'
+
+import Linkify from 'linkify-react';
+
+import * as linkify from 'linkifyjs';
+import hashtag from 'linkifyjs/plugins/hashtag';
 // import axios from "axios";
 function Detail() {
     const { id } = useParams()
@@ -16,6 +21,16 @@ function Detail() {
     // const {getdata}=useContext(ApiContext)
     const [data, Setdata] = useState()
     const [ content, setContent ] = useState()
+    var linkifyOptions = 
+    {
+        formatHref: function (href, type) {
+          if (type === 'hashtag') {
+              
+            href = '/hashtag/' + href.substring(1);
+          }
+          return href;
+        }
+      }
     async function getData() {
         try {
 
@@ -115,7 +130,8 @@ function Detail() {
                         {data['parent']['image']&&<img style={{width:"100%",height:"100%"}}src={`http://127.0.0.1:8000${data['parent']['image']}`}/>}
                         </div>
                         <div className="comment-text big" >
-                            {data['parent']['content']}
+                        <Linkify options={linkifyOptions}>{data['parent']['content']}</Linkify>
+                            
                 <ButtonGroup aria-label="Basic example" className="border"  style={{paddingLeft:"10%",paddingRight:"10%",width:"100%",display:"flex"}} >
                     <Button className='btn tweetbtn like' onClick={() => handleLike(data['parent']['id'])}>{data['parent']['likes']} <i class="bi bi-heart"></i></Button>
                     <Button className='btn tweetbtn retweet' onClick={() => handleretweet(data['parent']['id'])}><i class="bi bi-arrow-repeat"></i></Button>

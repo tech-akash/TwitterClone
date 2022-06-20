@@ -20,13 +20,19 @@ class tweet (models.Model):
     is_reply=models.BooleanField(default=False)
     class Meta:
         ordering=['-id']
+
+# class comment(models.Model):
+#     parent=models.ForeignKey(tweet,on_delete=models.CASCADE,null=True)
+#     user=models.ForeignKey()
+#     content=models.TextField()
+#     timeStamp=models.DateTimeField(auto_now_add=True)
+
     
 class Profile(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
+    following=models.ManyToManyField(User,related_name="following",blank=True)
     DOB=models.DateField(null=True,blank=True)
     Fname=models.CharField(max_length=20,null=True,blank=True)
     Lname=models.CharField(max_length=30,null=True,blank=True)
     CountryOfOrigin=models.CharField(max_length=30,null=True,blank=True)
     profileImg=models.ImageField(upload_to="./image", null=True,blank=True)
-    # LikedTweets=models.ManyToManyField(tweet,related_name="userLikes")
-    # OwnTweets=models.ManyToManyField(tweet,related_name="userTweets")

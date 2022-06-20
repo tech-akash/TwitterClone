@@ -16,9 +16,11 @@ import { useParams } from "react-router-dom";
 import SingleTweet from "../components/singleTweet";
 import '../style.scss'
 import pic from "../user-icon.png";
+import { ApiContext } from "../contexts/ApiContent";
 function Profile() {
     const { id } = useParams()
-    const { authToken } = useContext(AuthContext)
+    const { authToken,user } = useContext(AuthContext)
+    const {getdata,following}=useContext(ApiContext)
     const [data, Setdata] = useState()
     const { content, setContent } = useState()
     const [value, setValue] = React.useState("one");
@@ -58,6 +60,23 @@ function Profile() {
     useEffect(() => {
         getData()
     }, [])
+    async function toggleFollower() {
+      try {
+            let data1=data['username']
+          const Response = await axios.post(`http://127.0.0.1:8000/toggleFollower/`,{data1}, {
+              headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": "Bearer " + String(authToken.access)
+              }
+          })
+          getdata();
+          console.log(Response.data)
+          // Setdata(Response.data)
+
+      } catch (e) {
+          console.log(e)
+      }
+  }
 
     if (data) {
         console.log(data['0'])
@@ -93,12 +112,16 @@ function Profile() {
             <div className="profileInfo">
               <h4 className="profileInfoName">{data['username']}</h4>
               <span className="profileInfoDesc">This is my discription for you to read</span>
-             
+              {user&&following&&user['username']!=data['username']&&<Button variant="outline-primary" size="lg" onClick={toggleFollower}>{following.has(data['username'])?<>UnFollow</>:<>Follow</>}</Button>}
+              {user&&user['username']==data['username']&&<Button variant="outline-primary" size="lg">Edit Profile</Button>}
             </div>
+            <div>
+            </div>
+            
           </div>
           <div>
            
-          <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" className="m-3 justify-content-center" >
+  <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" className="m-3 justify-content-center" >
   <Tab eventKey="home" title="My Post">
   {data['ownTweet'] && data['ownTweet'].map(({ image, content, id, likes,username,parent,is_retweet,is_reply,index }) => (
               <div>

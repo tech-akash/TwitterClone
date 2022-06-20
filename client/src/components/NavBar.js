@@ -20,7 +20,7 @@ function NavBar(){
         <i class="bi bi-person"></i> {user?<Link style={{ textDecoration: "none" }} to ={`/profile/${user['username']}`}>Profile </Link>:<Link style={{ textDecoration: "none" }} to={'/profile/notLogin'}>Profile</Link>}
       </Nav.Item>
       <Nav.Item eventKey="link-1" style={{ fontSize: "30px", margin: "10px" }}>{user ? <Link style={{ textDecoration: "none" }} to="/logout" ><i class="bi bi-box-arrow-left"></i> Logout</Link> : <Link style={{ textDecoration: "none" }} to="/signin"><i class="bi bi-box-arrow-in-right"></i> Login</Link>} </Nav.Item>
-      <Nav.Item eventKey="link-2" style={{ fontSize: "30px", margin: "10px" }}>Link</Nav.Item>
+      <Nav.Item eventKey="link-2" style={{ fontSize: "30px", margin: "10px" }}><Link style={{ textDecoration: "none" }} to="/discover"><i class="bi bi-search"></i> Discover</Link></Nav.Item>
     </Nav>
 
   </div>);

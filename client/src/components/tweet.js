@@ -7,12 +7,26 @@ import axios from "axios";
 import pic from "../user-icon.png";
 import { ApiContext } from "../contexts/ApiContent";
 
+import Linkify from 'linkify-react';
+
+import * as linkify from 'linkifyjs';
+import hashtag from 'linkifyjs/plugins/hashtag';
+
 function Tweet(props) {
     const { authToken } = useContext(AuthContext)
     const {getdata}=useContext(ApiContext)
     const [modalShow, setModalShow] = useState(false);
     const [clickObjId, setclickObjId] = useState(null);
     var data=null;
+    var linkifyOptions = 
+    {
+        formatHref: function (href, type) {
+          if (type === 'hashtag') {
+            href = 'https://twitter.com/hashtag/' + href.substring(1);
+          }
+          return href;
+        }
+      }
     async function handleLike(id) {
         try {
 
@@ -55,7 +69,7 @@ function Tweet(props) {
                 <Card.Body>
                     <Card.Title><Link to={`/profile/${props.username}`}>{props.username}</Link></Card.Title>
                     {props.content && <Card.Text>
-                        {props.content}
+                        <Linkify options={linkifyOptions}>{props.content}</Linkify>
                     </Card.Text>}
                 </Card.Body>
                 </Link>

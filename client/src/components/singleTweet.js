@@ -8,11 +8,25 @@ import {
 } from 'react-bootstrap'
 import '../style.scss'
 import { Link, Navigate } from "react-router-dom";
+
+import Linkify from 'linkify-react';
+
+import * as linkify from 'linkifyjs';
+import hashtag from 'linkifyjs/plugins/hashtag';
 function SingleTweet(props) {
     const [content, setContent] = useState()
     const id = 0;
     const { authToken } = useContext(AuthContext)
     const{getdata}=useContext(ApiContext);
+    var linkifyOptions = 
+    {
+        formatHref: function (href, type) {
+          if (type === 'hashtag') {
+            href = 'https://twitter.com/hashtag/' + href.substring(1);
+          }
+          return href;
+        }
+      }
     async function handleLike(tid) {
         console.log(id)
         try {
@@ -69,7 +83,7 @@ function SingleTweet(props) {
                             <Card.Title>{props.data['0']['username']}</Card.Title>
 
                             {props.data['0']['content'] && <Card.Text>
-                                {props.data['0']['content']}
+                            <Linkify options={linkifyOptions}>{props.data['0']['content']}</Linkify>
                             </Card.Text>}
                         </Card.Body>
 

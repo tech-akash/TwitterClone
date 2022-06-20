@@ -68,11 +68,28 @@ def logout_view(request,*args, **kwargs):
     return Response({})
 
 @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])  
 def home_view(request,*args,**kwargs):
-    tweet_obj=tweet.objects.all()
+    print(request.user)
+    profile=Profile.objects.get(user=request.user)
+    following=profile.following.all().values('username')
+    print(following)
+    follow={}
+    tweet_obj=[]
+    for x in following :
+        follow[x['username']]=1
+        user=User.objects.get(username=x['username'])
+        for y in tweet.objects.filter(user=user):
+            tweet_obj.append(y)
+    print(tweet_obj)
+
+
+    # tweet_obj=tweet.objects.all()
     serializer=tweetSerializer(tweet_obj,many=True)
-    return Response(serializer.data)
+    tweets={}
+    tweets['data']=serializer.data
+    tweets['following']=follow
+    return Response(tweets)
 
 @api_view(['POST'])
 def create_tweet(request,*args,**kwargs):
@@ -82,6 +99,23 @@ def create_tweet(request,*args,**kwargs):
     else:
         raise Http404("User does not exist")
     return Response(serializer.data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])  
+def toggle_follower(request,*args, **kwargs):
+    print(request.data['data1'])
+    profile=Profile.objects.get(user=request.user)
+    following=profile.following.all().values('username')
+    obj=User.objects.get(username=request.data['data1'])
+    for x in following:
+        if(request.data['data1']==x['username']):
+            profile.following.remove(obj)
+            return Response({})
+    profile.following.add(obj)
+        
+    return Response({})
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -172,7 +206,7 @@ def tweet_detail_view(request,pk,*args, **kwargs):
 
 
 @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def profile_view(request,pk,*args,**kwargs):
     user=User.objects.get(username=pk)
     profile=Profile.objects.get(user=user)
@@ -190,4 +224,16 @@ def profile_view(request,pk,*args,**kwargs):
     value['likedTweet']=tweetSerializer(likedTweet,many=True).data
     value['ownTweet']=ownTweet
     return Response(value)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def discover_view(request,*args, **kwargs):
+    user_list=User.objects.all().values()
+    allUser=[]
+    for x in user_list:
+        allUser.append(x['username'])
+    user={}
+    user['allUser']=allUser
+    return Response(user)
 

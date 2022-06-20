@@ -11,6 +11,7 @@ import Tweet from '../components/tweet';
 import { AuthContext } from '../contexts/AuthContext';
 import { ApiContext } from '../contexts/ApiContent';
 function Home() {
+  const navigate = useNavigate();
   const [content, setContent] = useState("")
   const [image, setImage] = useState(null)
   const { user, authToken, logout,SettweetDetail } = useContext(AuthContext)
@@ -40,12 +41,20 @@ function Home() {
       });
   }
 
- 
+  
   if (data) {
     console.log(data)
   }
+  // if(!user){
+  //   console.log("hey")
+  //   navigate("/signin")
+  // }
+  useEffect(()=>{
+    if(!user){
 
-
+      navigate("/signin")
+    }
+  },[])
   return (
     <Container className="App">
 
