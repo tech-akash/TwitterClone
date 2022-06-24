@@ -15,7 +15,9 @@ retweet_view,
 reply_view,
 tweet_detail_view,
 toggle_follower,
-discover_view,)
+discover_view,
+chat_list,
+chatroom,)
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
@@ -36,5 +38,7 @@ urlpatterns = [
     path('detail/<int:pk>/',tweet_detail_view,name="tweetDetail"),
     path('toggleFollower/',toggle_follower,name="follower"),
     path('discover/',discover_view,name="discover"),
+    path('chat/', chat_list, name='index'),
+    path('chat/<str:room_name>/', chatroom, name='room'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

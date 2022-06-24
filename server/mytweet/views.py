@@ -7,7 +7,7 @@ from rest_framework.decorators import api_view,permission_classes
 from rest_framework.response import Response
 from .serializers import tweetSerializer,userSerializer,createTweetSerializer,UserProfileSerializer
 # Create your views here.
-from .models import tweet,Profile,tweetLike
+from .models import tweet,Profile,tweetLike,Chat,Chat_Room
 from django.contrib.auth.models import User
 from .forms import createUserForm
 from django.contrib.auth import login,logout,authenticate
@@ -236,4 +236,29 @@ def discover_view(request,*args, **kwargs):
     user={}
     user['allUser']=allUser
     return Response(user)
+
+
+@api_view(['GET','POST'])
+@permission_classes([IsAuthenticated])
+def chat_list(request,*args, **kwargs):
+
+    pass
+
+
+@api_view(['GET','POST'])
+@permission_classes([IsAuthenticated])
+def chatroom(request,room_name,*args, **kwargs):
+    room=Chat_Room.objects.filter(name=room_name).first()
+    chats=[]
+    if room:
+        chats=Chat.objects.filter(room=room)
+    else:
+        room=Chat_Room(name=room_name)
+        room.save()
+    
+    return Response({
+        'room_name':room_name,
+        'chats':chats
+    })
+
 

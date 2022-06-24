@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'rest_framework',
     'mytweet',
+    'channels',
 ]
 REST_FRAMEWORK = {
     
@@ -164,6 +165,15 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+
+ASGI_APPLICATION = "tweet1.routing.application"
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        
+    },
+}
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
